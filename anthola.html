@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anthola | Travel Booking</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#0f172a',
+                        accent: '#f97316',
+                        light: '#f8fafc',
+                        dark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+            scroll-behavior: smooth;
+        }
+        
+        .hero-bg {
+            background-image: linear-gradient(rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.8)), 
+            url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23374151"/><path d="M0 50L50 0L100 50L50 100Z" fill="%232563eb" opacity="0.1"/></svg>');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .bus-seat {
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .driver-seat {
+            background: linear-gradient(135deg, #94a3b8, #64748b);
+            color: white;
+            border-radius: 12px;
+        }
+        
+        .moving-clouds {
+            animation: cloudsAnimation 40s linear infinite;
+        }
+        
+        @keyframes cloudsAnimation {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .card-rotate {
+            transform: rotate(0);
+            transition: transform 0.5s ease;
+        }
+        
+        .card-rotate:hover {
+            transform: rotate(5deg);
+        }
+        
+        .highlight-box {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .highlight-box::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(37, 99, 235, 0.1), transparent 70%);
+            z-index: -1;
+        }
+        
+        .destination-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .destination-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <nav class="bg-secondary text-white py-4 px-6 shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="bg-accent p-2 rounded-full">
+                    <i class="fa-solid fa-plane-departure text-white text-xl"></i>
+                </div>
+                <h1 class="text-2xl font-bold">Anthola</h1>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex space-x-8 items-center">
+                <a href="#" class="hover:text-accent font-medium">Home</a>
+                <a href="#destinations" class="hover:text-accent font-medium">Destinations</a>
+                <a href="#booking" class="hover:text-accent font-medium">Book Now</a>
+                <a href="#seats" class="hover:text-accent font-medium">Live Seats</a>
+                <a href="#" class="hover:text-accent font-medium">Contact</a>
+                <a href="sign.html" class="bg-accent hover:bg-orange-700 text-white px-4 py-2 rounded-full font-medium transition rounded-full">
+  Sign In
+</a>
+
+            </div>
+            
+            <!-- Mobile menu button -->
+            <button id="mobile-menu-button" class="md:hidden text-white">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="md:hidden hidden bg-secondary py-4 px-6 absolute left-0 right-0 top-full shadow-lg">
+            <div class="flex flex-col space-y-4">
+                <a href="#" class="hover:text-accent">Home</a>
+                <a href="#destinations" class="hover:text-accent">Destinations</a>
+                <a href="#booking" class="hover:text-accent">Book Now</a>
+                <a href="#seats" class="hover:text-accent">Live Seats</a>
+                <a href="#" class="hover:text-accent">Contact</a>
+                <a href="sign.html" class="bg-accent hover:bg-orange-700 text-white px-4 py-2 rounded-full text-center">Sign In</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="hero-bg text-white py-16 md:py-28 px-6">
+        <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-6">
+                <h1 class="text-4xl md:text-6xl font-bold leading-tight">
+                    Travel the World <br><span class="text-accent">Your Way</span>
+                </h1>
+                <p class="text-lg opacity-90 max-w-lg">
+                    Discover amazing destinations, find the best deals, and book with confidence. 
+                    See live available seats for your next adventure with Anthola.
+                </p>
+                <div class="flex space-x-4">
+                    <button class="bg-accent hover:bg-orange-700 text-white px-8 py-3 rounded-full font-medium text-lg transition transform hover:-translate-y-1">
+                        Book Now <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </button>
+                    <button class="border-2 border-white hover:border-accent text-white hover:text-accent px-8 py-3 rounded-full font-medium text-lg transition">
+                        Learn More
+                    </button>
+                </div>
+            </div>
+            
+            <div class="relative card-rotate">
+                <div class="bg-white/10 backdrop-blur rounded-xl p-6 border border-white/20 shadow-2xl">
+                    <h3 class="text-xl font-bold mb-4">Book Your Trip</h3>
+                    <form class="space-y-4">
+                        <div>
+                            <label class="block text-sm mb-1">From</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-location-dot absolute left-3 top-3 text-accent"></i>
+                                <input type="text" class="w-full bg-white/5 border border-white/20 rounded-lg pl-10 pr-4 py-3 text-white" placeholder="Select departure">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm mb-1">To</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-location-dot absolute left-3 top-3 text-accent"></i>
+                                <input type="text" class="w-full bg-white/5 border border-white/20 rounded-lg pl-10 pr-4 py-3 text-white" placeholder="Select destination">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm mb-1">Departure</label>
+                                <div class="relative">
+                                    <i class="fa-solid fa-calendar-days absolute left-3 top-3 text-accent"></i>
+                                    <input type="date" class="w-full bg-white/5 border border-white/20 rounded-lg pl-10 pr-4 py-3 text-white">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm mb-1">Return (Optional)</label>
+                                <div class="relative">
+                                    <i class="fa-solid fa-calendar-days absolute left-3 top-3 text-accent"></i>
+                                    <input type="date" class="w-full bg-white/5 border border-white/20 rounded-lg pl-10 pr-4 py-3 text-white">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm mb-1">Passengers</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-users absolute left-3 top-3 text-accent"></i>
+                                <select class="w-full bg-white/5 border border-white/20 rounded-lg pl-10 pr-4 py-3 text-white">
+                                    <option>1 Passenger</option>
+                                    <option>2 Passengers</option>
+                                    <option>3 Passengers</option>
+                                    <option>4 Passengers</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full bg-accent hover:bg-orange-700 text-white py-3 rounded-lg font-medium">
+                            Find Trips <i class="fa-solid fa-magnifying-glass ml-2"></i>
+                        </button>
+                    </form>
+                </div>
+                <div class="absolute -bottom-6 -right-6 bg-white text-secondary py-2 px-4 rounded-full shadow-lg">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa-solid fa-star text-yellow-500"></i>
+                        <span>4.9/5 Satisfaction Rating</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Popular Destinations -->
+    <section id="destinations" class="py-16 px-6 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-14">
+                <h2 class="text-3xl md:text-4xl font-bold text-secondary">Popular <span class="text-primary">Destinations</span></h2>
+                <p class="text-gray-600 max-w-2xl mx-auto mt-4">
+                    Discover our most booked destinations. Amazing places waiting for you to explore.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Destination 1 -->
+                <div class="destination-card bg-light border border-gray-100 rounded-2xl overflow-hidden shadow-md">
+                    <div class="relative">
+                        <div class="bg-gray-200 border-2 border-dashed rounded-xl w-full h-48" ></div>
+                        <div class="absolute top-4 right-4 bg-primary text-white py-1 px-3 rounded-lg">
+                            From $299
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-bold text-secondary">Bali, Indonesia</h3>
+                            <div class="flex text-yellow-500">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star-half-stroke"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mt-2">
+                            Tropical paradise with stunning beaches and rich culture.
+                        </p>
+                        <div class="flex justify-between items-center mt-6">
+                            <div class="flex items-center text-gray-500">
+                                <i class="fa-solid fa-calendar-days mr-2"></i>
+                                <span>7 days</span>
+                            </div>
+                            <button class="text-primary font-medium hover:text-blue-700">
+                                Explore <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Destination 2 -->
+                <div class="destination-card bg-light border border-gray-100 rounded-2xl overflow-hidden shadow-md">
+                    <div class="relative">
+                        <div class="bg-gray-200 border-2 border-dashed rounded-xl w-full h-48" ></div>
+                        <div class="absolute top-4 right-4 bg-primary text-white py-1 px-3 rounded-lg">
+                            From $499
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-bold text-secondary">Santorini, Greece</h3>
+                            <div class="flex text-yellow-500">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mt-2">
+                            Iconic white buildings with stunning Mediterranean views.
+                        </p>
+                        <div class="flex justify-between items-center mt-6">
+                            <div class="flex items-center text-gray-500">
+                                <i class="fa-solid fa-calendar-days mr-2"></i>
+                                <span>5 days</span>
+                            </div>
+                            <button class="text-primary font-medium hover:text-blue-700">
+                                Explore <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Destination 3 -->
+                <div class="destination-card bg-light border border-gray-100 rounded-2xl overflow-hidden shadow-md">
+                    <div class="relative">
+                        <div class="bg-gray-200 border-2 border-dashed rounded-xl w-full h-48" ></div>
+                        <div class="absolute top-4 right-4 bg-primary text-white py-1 px-3 rounded-lg">
+                            From $599
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-bold text-secondary">Kyoto, Japan</h3>
+                            <div class="flex text-yellow-500">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mt-2">
+                            Historic temples, traditional gardens, and cherry blossoms.
+                        </p>
+                        <div class="flex justify-between items-center mt-6">
+                            <div class="flex items-center text-gray-500">
+                                <i class="fa-solid fa-calendar-days mr-2"></i>
+                                <span>10 days</span>
+                            </div>
+                            <button class="text-primary font-medium hover:text-blue-700">
+                                Explore <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Destination 4 -->
+                <div class="destination-card bg-light border border-gray-100 rounded-2xl overflow-hidden shadow-md">
+                    <div class="relative">
+                        <div class="bg-gray-200 border-2 border-dashed rounded-xl w-full h-48" ></div>
+                        <div class="absolute top-4 right-4 bg-primary text-white py-1 px-3 rounded-lg">
+                            From $399
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-bold text-secondary">Paris, France</h3>
+                            <div class="flex text-yellow-500">
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star"></i>
+                                <i class="fa-solid fa-star-half-stroke"></i>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mt-2">
+                            Romantic city of lights with iconic landmarks and cuisine.
+                        </p>
+                        <div class="flex justify-between items-center mt-6">
+                            <div class="flex items-center text-gray-500">
+                                <i class="fa-solid fa-calendar-days mr-2"></i>
+                                <span>6 days</span>
+                            </div>
+                            <button class="text-primary font-medium hover:text-blue-700">
+                                Explore <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button class="inline-flex items-center text-primary font-medium hover:text-blue-700 text-lg">
+                    View All Destinations <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Live Seat Availability -->
+    <section id="seats" class="py-16 px-6 bg-light">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-14">
+                <h2 class="text-3xl md:text-4xl font-bold text-secondary">Live <span class="text-primary">Seat Availability</span></h2>
+                <p class="text-gray-600 max-w-2xl mx-auto mt-4">
+                    See which seats are available on your next trip. Select your preferred seats in real-time.
+                </p>
+            </div>
+            
+            <!-- Flight/Bus Info -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                <div class="flex flex-col sm:flex-row justify-between items-center">
+                    <div class="text-center sm:text-left mb-4 sm:mb-0">
+                        <h3 class="text-xl font-bold text-secondary">New York <span class="text-primary">→</span> Los Angeles</h3>
+                        <div class="flex items-center justify-center sm:justify-start mt-2 space-x-4">
+                            <span class="text-gray-600"><i class="fa-solid fa-calendar-days mr-1"></i> 15 July 2023</span>
+                            <span class="text-gray-600"><i class="fa-regular fa-clock mr-1"></i> 11:45 AM</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-green-100 text-green-800 py-1 px-3 rounded-full text-sm">Flight AA243</span>
+                        <span class="bg-blue-100 text-blue-800 py-1 px-3 rounded-full text-sm">Boeing 737</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Seat Map -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <!-- Status Legend -->
+                <div class="flex justify-center mb-8">
+                    <div class="flex flex-wrap justify-center gap-4">
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 rounded-full bg-green-500 mr-2"></div>
+                            <span class="text-gray-700">Available</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 rounded-full bg-red-500 mr-2"></div>
+                            <span class="text-gray-700">Occupied</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 rounded-full bg-yellow-500 mr-2"></div>
+                            <span class="text-gray-700">Selected by you</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-4 h-4 rounded-full bg-blue-500 mr-2"></div>
+                            <span class="text-gray-700">Premium</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Seat Map Container -->
+                <div class="max-w-3xl mx-auto">
+                    <!-- Driver/First Class Section -->
+                    <div class="mb-12 text-center">
+                        <h4 class="text-lg font-semibold text-secondary mb-4">First Class</h4>
+                        <div class="flex justify-center space-x-6">
+                            <div class="driver-seat w-16 h-16 flex items-center justify-center text-white">
+                                <i class="fa-solid fa-user-tie text-2xl"></i>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bus-seat bg-blue-100 text-blue-800 border border-blue-300" data-seat="1A">
+                                    1A
+                                </div>
+                                <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="1B">
+                                    1B
+                                </div>
+                                <div class="bus-seat bg-blue-100 text-blue-800 border border-blue-300" data-seat="1C">
+                                    1C
+                                </div>
+                                <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="1D">
+                                    1D
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Standard Seats -->
+                    <h4 class="text-lg font-semibold text-secondary mb-6 text-center">Economy Class</h4>
+                    
+                    <!-- Left side seats -->
+                    <div class="flex justify-center">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                            <!-- Row 2 -->
+                            <div class="bus-seat bg-red-200 text-gray-600 cursor-not-allowed" data-seat="2A">
+                                2A
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="2B">
+                                2B
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="2C">
+                                2C
+                            </div>
+                            <div class="bus-seat bg-red-200 text-gray-600 cursor-not-allowed" data-seat="2D">
+                                2D
+                            </div>
+                            
+                            <!-- Row 3 -->
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="3A">
+                                3A
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="3B">
+                                3B
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="3C">
+                                3C
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="3D">
+                                3D
+                            </div>
+                            
+                            <!-- Row 4 -->
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="4A">
+                                4A
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="4B">
+                                4B
+                            </div>
+                            <div class="bus-seat bg-red-200 text-gray-600 cursor-not-allowed" data-seat="4C">
+                                4C
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="4D">
+                                4D
+                            </div>
+                            
+                            <!-- Row 5 -->
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="5A">
+                                5A
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="5B">
+                                5B
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="5C">
+                                5C
+                            </div>
+                            <div class="bus-seat bg-red-200 text-gray-600 cursor-not-allowed" data-seat="5D">
+                                5D
+                            </div>
+                            
+                            <!-- Row 6 -->
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="6A">
+                                6A
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="6B">
+                                6B
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="6C">
+                                6C
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="6D">
+                                6D
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Aisle -->
+                    <div class="h-8 flex items-center justify-center my-6 relative">
+                        <div class="h-1 w-full bg-gray-300 rounded-full"></div>
+                        <span class="absolute bg-white px-4 text-gray-500">AISLE</span>
+                    </div>
+                    
+                    <!-- Right side seats -->
+                    <div class="flex justify-center">
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                            <!-- Row 7 -->
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="7A">
+                                7A
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="7B">
+                                7B
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="7C">
+                                7C
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="7D">
+                                7D
+                            </div>
+                            
+                            <!-- Row 8 -->
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="8A">
+                                8A
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="8B">
+                                8B
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="8C">
+                                8C
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="8D">
+                                8D
+                            </div>
+                            
+                            <!-- Row 9 -->
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="9A">
+                                9A
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="9B">
+                                9B
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="9C">
+                                9C
+                            </div>
+                            <div class="bus-seat bg-red-200 text-gray-600 cursor-not-allowed" data-seat="9D">
+                                9D
+                            </div>
+                            
+                            <!-- Row 10 -->
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="10A">
+                                10A
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="10B">
+                                10B
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="10C">
+                                10C
+                            </div>
+                            <div class="bus-seat bg-green-200 hover:bg-green-300 cursor-pointer" data-seat="10D">
+                                10D
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Seat Counter and Booking -->
+                <div class="mt-12 text-center">
+                    <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <span id="selected-seats-count">0</span> seats selected
+                        </div>
+                        <button class="bg-primary hover:bg-blue-700 text-white py-3 px-8 rounded-lg font-medium text-lg transition">
+                            Book Selected Seats <i class="fa-solid fa-ticket ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Why Choose Us -->
+    <section class="py-16 px-6 bg-white">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-14">
+                <h2 class="text-3xl md:text-4xl font-bold text-secondary">Why Choose <span class="text-primary">Anthola</span></h2>
+                <p class="text-gray-600 max-w-2xl mx-auto mt-4">
+                    We're committed to providing the best travel experience with these advantages
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="highlight-box bg-light p-8 rounded-xl border border-gray-100 relative overflow-hidden">
+                    <div class="text-primary text-5xl mb-6">
+                        <i class="fa-solid fa-shield-alt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-secondary mb-3">Safe & Secure</h3>
+                    <p class="text-gray-600">
+                        Your bookings and payments are completely secure with our 256-bit encryption.
+                    </p>
+                </div>
+                
+                <div class="highlight-box bg-light p-8 rounded-xl border border-gray-100 relative overflow-hidden">
+                    <div class="text-primary text-5xl mb-6">
+                        <i class="fa-solid fa-percent"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-secondary mb-3">Best Price Guarantee</h3>
+                    <p class="text-gray-600">
+                        We guarantee you'll find the best prices for your trip. Found cheaper? We'll match it!
+                    </p>
+                </div>
+                
+                <div class="highlight-box bg-light p-8 rounded-xl border border-gray-100 relative overflow-hidden">
+                    <div class="text-primary text-5xl mb-6">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-secondary mb-3">24/7 Support</h3>
+                    <p class="text-gray-600">
+                        Our dedicated support team is available 24/7 to assist you anytime, anywhere.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Newsletter -->
+    <section class="py-16 px-6 bg-primary">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white">Get Exclusive Travel Deals</h2>
+            <p class="text-blue-100 max-w-xl mx-auto mt-4">
+                Subscribe to our newsletter and be the first to receive our latest offers and promotions
+            </p>
+            
+            <div class="mt-8 max-w-md mx-auto flex">
+                <input type="email" placeholder="Your email address" class="flex-grow py-3 px-4 rounded-l-lg focus:outline-none">
+                <button class="bg-accent hover:bg-orange-700 text-white py-3 px-6 rounded-r-lg font-medium">
+                    Subscribe
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 px-6 bg-secondary text-gray-300">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="bg-accent p-2 rounded-full">
+                            <i class="fa-solid fa-plane-departure text-white text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">Anthola</h2>
+                    </div>
+                    <p class="mb-4">
+                        Making travel simple, affordable and accessible for everyone around the world.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-white font-semibold text-lg mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white">Home</a></li>
+                        <li><a href="#" class="hover:text-white">Destinations</a></li>
+                        <li><a href="#" class="hover:text-white">Special Deals</a></li>
+                        <li><a href="#" class="hover:text-white">About Us</a></li>
+                        <li><a href="#" class="hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-white font-semibold text-lg mb-4">Support</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white">My Account</a></li>
+                        <li><a href="#" class="hover:text-white">Manage Booking</a></li>
+                        <li><a href="#" class="hover:text-white">Customer Service</a></li>
+                        <li><a href="#" class="hover:text-white">FAQs</a></li>
+                        <li><a href="#" class="hover:text-white">Cancel Booking</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-white font-semibold text-lg mb-4">Contact Us</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-location-dot mt-1 mr-3 text-accent"></i>
+                            <span>123 Travel Street, New York, NY 10001, USA</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa-solid fa-phone mr-3 text-accent"></i>
+                            <span>+1 (800) 123-4567</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa-solid fa-envelope mr-3 text-accent"></i>
+                            <span>info@anthola.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-12 pt-8 text-center">
+                <p>© 2023 Anthola Travels. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+        
+        // Seat selection logic
+        const seats = document.querySelectorAll('.bus-seat:not(.bg-red-200)');
+        const selectedSeatsCount = document.getElementById('selected-seats-count');
+        let count = 0;
+        
+        seats.forEach(seat => {
+            seat.addEventListener('click', function() {
+                if (!this.classList.contains('bg-yellow-500')) {
+                    this.classList.remove('bg-green-200', 'hover:bg-green-300');
+                    this.classList.add('bg-yellow-500', 'text-white');
+                    count++;
+                } else {
+                    this.classList.remove('bg-yellow-500', 'text-white');
+                    this.classList.add('bg-green-200', 'hover:bg-green-300');
+                    count--;
+                }
+                selectedSeatsCount.textContent = count;
+            });
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
