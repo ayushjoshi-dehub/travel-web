@@ -7,7 +7,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
+   
     <script>
+
         tailwind.config = {
             theme: {
                 extend: {
@@ -101,6 +103,7 @@
     </style>
 </head>
 <body>
+     <script src="anthola.js"></script>
     <!-- Top Navigation -->
     <nav class="bg-secondary text-white py-4 px-6 shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
@@ -684,6 +687,9 @@
             </div>
         </div>
     </section>
+    <div class="admin-controls">
+    <button id="admin-mode-toggle" class="btn btn-warning">Toggle Admin Mode</button>
+</div>
     
     <!-- Footer -->
     <footer class="py-12 px-6 bg-secondary text-gray-300">
@@ -792,5 +798,25 @@
             });
         });
     </script>
+    <style>.admin-controls {
+    text-align: center;
+    margin-bottom: 15px;
+}
+.btn-warning {
+    background: linear-gradient(45deg, rgb(255, 193, 7) 0%, rgb(255, 235, 59) 100%);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+.btn-warning:hover {
+    transform: scale(1.03);
+}
+.btn-warning:active {
+    transform: scale(0.95);
+}</style>
 </body>
 </html>

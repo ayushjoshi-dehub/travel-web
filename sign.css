@@ -145,3 +145,23 @@
   color: #0099ff;
   font-size: 9px;
 }
+.admin-controls {
+    text-align: center;
+    margin-bottom: 15px;
+}
+.btn-warning {
+    background: linear-gradient(45deg, rgb(255, 193, 7) 0%, rgb(255, 235, 59) 100%);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+.btn-warning:hover {
+    transform: scale(1.03);
+}
+.btn-warning:active {
+    transform: scale(0.95);
+}
